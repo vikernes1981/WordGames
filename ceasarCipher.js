@@ -13,3 +13,42 @@
 
 
 
+// Function to perform Caesar Cipher encryption
+function caesarCipher(phrase, shift) {
+    const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+    const alphabetUpper = alphabet.toUpperCase();
+    let encryptedPhrase = '';
+
+    // Normalize the shift to be within the range of 0-25
+    shift = shift % 26;
+
+    for (let char of phrase) {
+        if (alphabet.includes(char)) {
+            // Find the new position and handle wrapping around
+            let newIndex = (alphabet.indexOf(char) + shift + 26) % 26;
+            encryptedPhrase += alphabet[newIndex];
+        } else if (alphabetUpper.includes(char)) {
+            let newIndex = (alphabetUpper.indexOf(char) + shift + 26) % 26;
+            encryptedPhrase += alphabetUpper[newIndex];
+        } else {
+            // If character is not a letter, add it as is
+            encryptedPhrase += char;
+        }
+    }
+
+    return encryptedPhrase;
+}
+
+// Get inputs from process.argv
+const phrase = process.argv[2];
+const shift = parseInt(process.argv[3]);
+
+// Check if inputs are provided
+if (!phrase || isNaN(shift)) {
+    console.error("Usage: node caesarCipher.js <phrase> <shift>");
+    process.exit(1);
+}
+
+// Perform the encryption and output the result
+const encryptedPhrase = caesarCipher(phrase, shift);
+console.log(encryptedPhrase);
